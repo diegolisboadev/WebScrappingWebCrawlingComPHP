@@ -19,3 +19,4 @@ Route::get('/', function () {
 });
 
 Route::get('/web',[WebScrappingController::class, 'web'])->name('web');
+Route::get('/webAjax', [WebScrappingController::class, 'webAjax'])->name('webAjax');
