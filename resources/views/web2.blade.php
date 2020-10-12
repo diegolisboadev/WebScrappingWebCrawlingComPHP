@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Teste Slide Mensagens</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ asset('css/style.min.css') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
     <!-- Link Swiper's CSS -->
 
@@ -18,13 +17,9 @@
         <div class="container">
 
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators text-dark">
+                <ol class="carousel-indicators">
                 </ol>
                 <div class="carousel-inner" id="carousel_slide">
-        
-                  <!--<div class="carousel-item active">
-                    <img class="d-block w-100" src="https://c.pxhere.com/photos/27/7b/scotland_centralscotland_benmore_stobbinnein_crianlarich_scotspine_mountains_landscape-267332.jpg!d" alt="Primeiro Slide">
-                  </div>-->
 
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
