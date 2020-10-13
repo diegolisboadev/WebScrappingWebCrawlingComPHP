@@ -19,7 +19,14 @@ class WebScrappingController extends Controller
         return view('web');
     }
 
-    public function web2()
+    public function web2() {
+        return view('web2');
+    }
+
+    public function web3() {
+        return view('web3');
+    }
+
 
     // Retornar a Newsletter do Site da SEPLAN
     public function webAJax() {
@@ -75,7 +82,7 @@ class WebScrappingController extends Controller
 
         foreach($tr_date as $i => $trd) {
             $dados_array_tce += [
-                $i => ['data' => trim($trd), 'link' => $tr_link[$i], 'texto' => trim($tr_texto[$i])]
+                $i => ['data' => trim((new \DateTime($trd))->format('y/m/d')), 'link' => $tr_link[$i], 'texto' => trim($tr_texto[$i])]
             ];
         }
 

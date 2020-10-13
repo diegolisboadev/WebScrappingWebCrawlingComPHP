@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Noticias TJ - MA</title>
+    <title>Noticias TCE - MA</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Link Swiper's CSS -->
-    <link rel="stylesheet" href="{{ asset('css/tjma.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/tcema.min.css') }}">
 
 </head>
 <body>
@@ -20,7 +20,7 @@
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                 </ol>
-                <div class="carousel-inner" id="carousel_slide_tjma">
+                <div class="carousel-inner" id="carousel_slide_tcema">
 
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -41,6 +41,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <!-- NOTE: prior to v2.2.1 tiny-slider.js need to be in <body> -->
 
-    <script src="{{ asset('js/tjma.min.js') }}"></script>
+    <script src="{{ asset('js/tcema.min.js') }}"></script>
 </body>
 </html>

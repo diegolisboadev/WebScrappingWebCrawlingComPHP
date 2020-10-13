@@ -18,8 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/web',[WebScrappingController::class, 'web'])->name('web');
-Route::get('/webAjax', [WebScrappingController::class, 'webAjax'])->name('webAjax');
+Route::get('/seplan',[WebScrappingController::class, 'web'])->name('web');
+Route::get('/tjma', [WebScrappingController::class, 'web2'])->name('web2');
+Route::get('/tcema', [WebScrappingController::class, 'web3'])->name('web3');
 
+Route::get('/webAjax', [WebScrappingController::class, 'webAjax'])->name('webAjax');
 Route::get('/webAjax2', [WebScrappingController::class, 'webAjax2'])->name('webAjax2');
 Route::get('/webAjax3', [WebScrappingController::class, 'webAjax3'])->name('webAjax3');

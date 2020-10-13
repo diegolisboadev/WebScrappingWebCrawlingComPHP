@@ -5,27 +5,15 @@ html { font-family: "Open Sans",sans-serif; }
 
 .carousel { border-radius: 20px; height: 20% !important; }
 .carousel-caption { border-radius: 20px; margin-top: 20%; }
-.carousel-item { height: 60vh;background-size: cover;background-position: center center;background: url('https://seplan.ma.gov.br/files/2019/10/logo-secretarias-seplan.jpg') no-repeat; }
+.carousel-item { height: 65vh;background-size: cover;background-position: center center;background: url('https://seplan.ma.gov.br/files/2019/10/logo-secretarias-seplan.jpg') no-repeat; }
 .carousel-item a { font-size: 15pt; position: absolute;margin: 0;color: white;left: 50%;
     top: 60%;
     transform: translate(-50%, -50%); 
 }
 
 .carousel-control-prev-icon,
-.carousel-control-next-icon {
-  outline: black;
-  background-image: none;
-}
+.carousel-control-next-icon {outline: black;background-image: none;}
 
-.carousel-control-next-icon:after
-{
-  content: '\21E8';
-  font-size: 60px;
-  color: #000000;
-}
+.carousel-control-next-icon:after{content: '➡';font-size: 60px;color: #000000;}
 
-.carousel-control-prev-icon:after {
-  content: '\21E6';
-  font-size: 60px;
-  color: #000000;
-}
+.carousel-control-prev-icon:after {content: '⬅';font-size: 60px;color: #000000;}
