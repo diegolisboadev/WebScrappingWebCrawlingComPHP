@@ -15,12 +15,14 @@
     <div class="init"></div>
     <hr class="divider"/>
 
-        <div class="container">
+    <div class="footer">
+
+        <div class="container text-center">
 
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators text-dark">
                 </ol>
-                <div class="carousel-inner" id="carousel_slide_all">
+                <div class="carousel-inner mb-3" id="carousel_slide_all">
 
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -34,6 +36,8 @@
               </div>
 
         </div>
+
+    </div>
 
     <hr class="divider"/>
 
