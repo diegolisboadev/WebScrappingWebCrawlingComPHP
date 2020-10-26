@@ -17,7 +17,7 @@
 
     <div class="footer">
 
-        <div class="container text-center">
+        <div class="container-fluid text-center">
 
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators text-dark">

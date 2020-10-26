@@ -30,7 +30,6 @@ class WebScrappingController extends Controller
     public function webUni() {
         return view('webUni');
     }
-
     // Unificação do Sites
     public function webUniAjax() {
         $seplanNotice = $this->seplanArrayNotice();
@@ -44,7 +43,6 @@ class WebScrappingController extends Controller
 
         return response()->json($arrayUnion);
     }
-
 
     // Retornar a Newsletter do Site da SEPLAN
     public function webAJax() {
