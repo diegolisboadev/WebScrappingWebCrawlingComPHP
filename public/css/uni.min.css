@@ -10,6 +10,12 @@ html { font-family: "Open Sans",sans-serif; }
 
 .carousel-control-prev-icon:after {content: '◄';font-size: 20px;color: #000000;}
 
+.carousel-inner > .carousel-item {
+    -webkit-transition: -webkit-transform 1.2s ease-in-out !important;
+    -o-transition: -o-transform 1.2s ease-in-out !important;
+    transition: transform 1.2s ease-in-out !important;
+}
+
 .footer {
     position: absolute;
     bottom: 0;
