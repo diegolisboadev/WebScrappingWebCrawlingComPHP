@@ -13,7 +13,11 @@
 </head>
 <body>
     <div class="init"></div>
-    <hr class="divider"/>
+
+    <div class="container-fluid mt-3 mb-3">
+        <h3 class="text-center font-weight-bold">Dashboard em Breve Aqui</h3>
+        <img class="img-fluid mx-auto d-block" style="width:40%;height:40%;" src="{{ asset('images/FES.png') }}" alt="FES">
+    </div>
 
     <div class="footer">
 
@@ -38,8 +42,6 @@
         </div>
 
     </div>
-
-    <hr class="divider"/>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>

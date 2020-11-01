@@ -30,15 +30,19 @@ class WebScrappingController extends Controller
     public function webUni() {
         return view('webUni');
     }
+
     // Unificação do Sites
     public function webUniAjax() {
         $seplanNotice = $this->seplanArrayNotice();
-        $tjmaNotice = $this->tjmaArrayNotice();
+        // $tjmaNotice = $this->tjmaArrayNotice();
         $tcemaNotice = $this->tcemaArrayNotice();
+        $minJusticaNotice = $this->minJusArrayNotice();
+        $tcuNotice = $this->tcuArrayNotice();
 
         //
         $arrayUnion = [
-            'uniao' => ['seplan' => $seplanNotice, 'tjma' => $tjmaNotice, 'tcema' => $tcemaNotice],
+            'uniao' => ['seplan' => $seplanNotice, 'minJus' => $minJusticaNotice,
+            'tcema' => $tcemaNotice, 'tcu' => $tcuNotice]
         ];
 
         return response()->json($arrayUnion);
@@ -103,6 +107,56 @@ class WebScrappingController extends Controller
         return response()->json($dados_array_tce);
     }
 
+    private function tcuArrayNotice() {
+        $crawler = $this->cliente->request('GET', 'https://portal.tcu.gov.br/imprensa/');
+
+        // Click no Button para Habilitar // 10 Noticias
+
+        $dados_tcu = [];
+        // $ul = $crawler->filterXPath('//div//ul[@class="noticias__lista-rapida"]//li');
+        $li_image = $crawler->filterXPath('//ul[@class="noticias__lista-rapida"]
+        //li[@class="noticia__lista_item"]//div[@class="noticia__imagem"]//img')->extract(['src']);
+        $link_notice = $crawler->filterXPath('//ul[@class="noticias__lista-rapida"]
+        //li[@class="noticia__lista_item"]//div[@class="noticia__imagem"]//a')->extract(['href']);
+        $data_notice = $crawler->filterXPath('//ul[@class="noticias__lista-rapida"]
+        //li[@class="noticia__lista_item"]//div[@class="noticia__texto"]//div[@class="noticia__lista_header"]
+        //div[@class="noticia__lista_data_hora"]')->extract(['_text']);
+        $titulo = $crawler->filterXPath('//ul[@class="noticias__lista-rapida"]
+        //li[@class="noticia__lista_item"]//div[@class="noticia__texto"]
+        //h3//a[@class="noticia__lista_manchete"]')->extract(['_text']);
+        $descricao = $crawler->filterXPath('//ul[@class="noticias__lista-rapida"]
+        //li[@class="noticia__lista_item"]//div[@class="noticia__texto"]//p')->extract(['_text']);
+
+        foreach($data_notice as $i => $dn) {
+            $dados_tcu += [
+                $i => ['data' => $dn, 'link' => $link_notice[$i], 'titulo' => $titulo[$i]],
+            ];
+        }
+
+        return response()->json($dados_tcu);
+    }
+
+    private function minJusArrayNotice() {
+        $crawler = $this->cliente->request('GET', 'https://www.gov.br/mj/pt-br/assuntos/noticias');
+
+        $dados_min_justica = [];
+        // $li = $crawler->filterXPath('//ul[@class="noticias listagem-noticias-com-foto"]//li');
+        $titulo_link = $crawler->filterXPath('//div[@class="conteudo"]//h2[@class="titulo"]//a')->extract(['_text', 'href']);
+        $data = $crawler->filterXPath('//ul[@class="noticias listagem-noticias-com-foto"]//li//div[@class="conteudo"]//span[@class="descricao"]//span[@class="data"]')->extract(['_text']);
+        $descricao = $crawler->filter('ul[class="noticias listagem-noticias-com-foto"] li div[class="conteudo"] span[class="descricao"]')->extract(['_text']);
+        $imagem = $crawler->filter('ul[class="noticias listagem-noticias-com-foto"] li div[class="imagem"] img')->extract(['src']);
+
+        foreach($data as $i => $dt) {
+            $dados_min_justica += [
+                $i => ['titulo_link' => $titulo_link[$i], 'data' => $dt,
+                'descricao' => $descricao[$i]]
+            ];
+        }
+
+        return response()->json($dados_min_justica);
+
+    }
+
     private function seplanArrayNotice() {
         $crawler = $this->cliente->request('GET', 'https://seplan.ma.gov.br/');
 
@@ -114,9 +168,7 @@ class WebScrappingController extends Controller
         // Adicionando o 3 Arrays Juntos em 1 Só (Pegando como Item inicial a tarja data)
         foreach($tarja_data as $i => $td) {
             $dados_array_seplan += [
-                $i => [
-                    ['data' => $td, 'titulo' => $titulo_and_link[$i], 'texto' => $texto[$i]]
-                ]
+                $i => ['data' => $td, 'titulo' => $titulo_and_link[$i], 'texto' => $texto[$i]]
             ];
         }
 
