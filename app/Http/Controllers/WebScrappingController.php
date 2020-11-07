@@ -38,11 +38,17 @@ class WebScrappingController extends Controller
         $tcemaNotice = $this->tcemaArrayNotice();
         $minJusticaNotice = $this->minJusArrayNotice();
         $tcuNotice = $this->tcuArrayNotice();
+        $bbNotice = $this->bancoDoBrasilNotice();
+        $pcNotice = $this->policiaCivilNotice();
 
         //
         $arrayUnion = [
-            'uniao' => ['seplan' => $seplanNotice, 'minJus' => $minJusticaNotice,
-            'tcema' => $tcemaNotice, 'tcu' => $tcuNotice]
+            'uniao' => ['seplan' => $seplanNotice,
+            'minJus' => $minJusticaNotice,
+            'tcema' => $tcemaNotice,
+            'tcu' => $tcuNotice,
+            'bb' => $bbNotice,
+            'pc' => $pcNotice]
         ];
 
         return response()->json($arrayUnion);
@@ -105,6 +111,49 @@ class WebScrappingController extends Controller
         }
 
         return response()->json($dados_array_tce);
+    }
+
+    private function policiaCivilNotice() {
+        $crawler = $this->cliente->request('GET', 'https://www.policiacivil.ma.gov.br/category/noticias/');
+
+        $dados_pc = [];
+        $link_title = $crawler->filterXPath('//div[@class="listing listing-blog listing-blog-1 clearfix  columns-1"]
+            //article //div[@class="featured clearfix"]//a[@class="img-holder"]')->extract(['href', 'title', 'style']);
+        $data = $crawler->filterXPath('//div[@class="listing listing-blog listing-blog-1 clearfix  columns-1"]
+        //article //div[@class="post-meta"] //span')->extract(['_text']);
+        $texto = $crawler->filterXPath('//div[@class="listing listing-blog listing-blog-1 clearfix  columns-1"]
+        //article //div[@class="post-summary"]')->extract(['_text']);
+
+        foreach($link_title as $i => $lt) {
+            $dados_pc += [
+                $i => ['data' => $data[$i], 'link_texto' => $link_title, /*'texto' => $texto[$i]*/]
+            ];
+        }
+
+        return response()->json($dados_pc);
+    }
+
+    private function bancoDoBrasilNotice() {
+        $crawler = $this->cliente->request('GET', 'https://www.bb.com.br/portalbb/page120,3366,3367,1,0,1,0.bb?codigoNoticia=0&pk_vid=d352c6d6a75a9d691604755659a4c6ae');
+
+        $data_array = [];
+        $dados_bb = [];
+        $div_data_dia = $crawler->filterXPath('//div[@class="grade_54"] //span[@class="titNot1"]')->extract(['_text']);
+        $div_data_mes = $crawler->filterXPath('//div[@class="grade_54"] //span[@class="titNot2"]')->extract(['_text']);
+        $link_texto = $crawler->filter('div[class="grade_54"] a[class="linkChamada_5"]')->extract(['_text', 'href']);
+
+        // Unificar os dados de dia e mes
+        foreach($div_data_dia as $i => $dd) {
+            array_push($data_array, $dd.' '.$div_data_mes[$i]);
+        }
+
+        foreach($data_array as $i => $da) {
+            $dados_bb += [
+                $i => ['data' => $da, 'link_texto' => $link_texto[$i]]
+            ];
+        }
+
+        return response()->json($dados_bb);
     }
 
     private function tcuArrayNotice() {
