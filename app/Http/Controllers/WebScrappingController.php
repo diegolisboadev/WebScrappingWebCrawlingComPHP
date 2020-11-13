@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Goutte\Client;
 use Sunra\PhpSimple\HtmlDomParser;
@@ -40,15 +41,22 @@ class WebScrappingController extends Controller
         $tcuNotice = $this->tcuArrayNotice();
         $bbNotice = $this->bancoDoBrasilNotice();
         $pcNotice = $this->policiaCivilNotice();
+        $cbmNotice = $this->cbmMaNotice();
+        $pmNotice = $this->pmMaNotice();
+        $sspNotice = $this->sspMaNotice();
 
         //
         $arrayUnion = [
-            'uniao' => ['seplan' => $seplanNotice,
-            'minJus' => $minJusticaNotice,
-            'tcema' => $tcemaNotice,
-            'tcu' => $tcuNotice,
-            'bb' => $bbNotice,
-            'pc' => $pcNotice]
+            'uniao' =>[
+                'seplan' => $seplanNotice,
+                'minJus' => $minJusticaNotice,
+                'tcema' => $tcemaNotice,
+                'tcu' => $tcuNotice,
+                'bb' => $bbNotice,
+                'pc' => $pcNotice,
+                'cbm' => $cbmNotice,
+                'pm' => $pmNotice,
+                'ssp' => $sspNotice]
         ];
 
         return response()->json($arrayUnion);
@@ -113,6 +121,92 @@ class WebScrappingController extends Controller
         return response()->json($dados_array_tce);
     }
 
+    private function stcMaNotice() {
+        try {
+            $crawler = $this->cliente->request('GET', 'http://stc.ma.gov.br/secao/noticias/');
+
+        } catch(\Exception $e) {
+            return response()->json(['erro' => true]);
+        }
+    }
+
+    private function sspMaNotice() {
+        try {
+            $crawler = $this->cliente->request('GET', 'https://www.ssp.ma.gov.br/noticias/');
+
+            $dados_ssp = [];
+            $link_title = $crawler->filterXPath('//div[@class="listing listing-blog listing-blog-1 clearfix  columns-1"]
+                //article //div[@class="featured clearfix"]//a[@class="img-holder"]')->extract(['href', 'title', 'style']);
+            $data = $crawler->filterXPath('//div[@class="listing listing-blog listing-blog-1 clearfix  columns-1"]
+            //article //div[@class="post-meta"] //span')->extract(['_text']);
+            $texto = $crawler->filterXPath('//div[@class="listing listing-blog listing-blog-1 clearfix  columns-1"]
+            //article //div[@class="post-summary"]')->extract(['_text']);
+
+
+            foreach($link_title as $i => $lt) {
+                $dados_ssp += [
+                    $i => ['data' => $data[$i], 'link_texto' => $lt, /*'texto' => $texto[$i]*/]
+                ];
+            }
+
+            return response()->json($dados_ssp);
+
+        } catch(\Exception $e) {
+            return response()->json(['erro' => true]);
+        }
+    }
+
+    private function pmMaNotice() {
+
+        try {
+
+            $crawler = $this->cliente->request('GET', 'https://pm.ssp.ma.gov.br/noticias-2/');
+
+            $dados_pm = [];
+            $link_title = $crawler->filterXPath('//div[@class="listing listing-blog listing-blog-5 clearfix "]
+                //article //div[@class="featured clearfix"]//a[@class="img-holder"]')->extract(['href', 'title', 'style']);
+            $data = $crawler->filterXPath('//div[@class="listing listing-blog listing-blog-5 clearfix "]
+            //article //div[@class="post-meta"] //span')->extract(['_text']);
+            $texto = $crawler->filterXPath('//div[@class="listing listing-blog listing-blog-5 clearfix "]
+            //article //div[@class="post-summary"]')->extract(['_text']);
+
+
+            foreach($link_title as $i => $lt) {
+                $dados_pm += [
+                    $i => ['data' => $data[$i], 'link_texto' => $lt, /*'texto' => $texto[$i]*/]
+                ];
+            }
+
+            return response()->json($dados_pm);
+
+        } catch(\Exception $e) {
+            return response()->json(['erro' => true]);
+        }
+
+    }
+
+    private function cbmMaNotice() {
+        $crawler = $this->cliente->request('GET', 'https://cbm.ssp.ma.gov.br/index.php/category/noticias/');
+
+        $dados_cbm = [];
+        $link_title = $crawler->filterXPath('//div[@class="listing listing-blog listing-blog-1 clearfix  columns-1"]
+            //article //div[@class="featured clearfix"]//a[@class="img-holder"]')->extract(['href', 'title', 'style']);
+        $data = $crawler->filterXPath('//div[@class="listing listing-blog listing-blog-1 clearfix  columns-1"]
+        //article //div[@class="post-meta"] //span')->extract(['_text']);
+        $texto = $crawler->filterXPath('//div[@class="listing listing-blog listing-blog-1 clearfix  columns-1"]
+        //article //div[@class="post-summary"]')->extract(['_text']);
+
+
+        foreach($link_title as $i => $lt) {
+            $dados_cbm += [
+                $i => ['data' => $data[$i], 'link_texto' => $link_title, /*'texto' => $texto[$i]*/]
+            ];
+        }
+
+        return response()->json($dados_cbm);
+
+    }
+
     private function policiaCivilNotice() {
         $crawler = $this->cliente->request('GET', 'https://www.policiacivil.ma.gov.br/category/noticias/');
 
@@ -143,9 +237,7 @@ class WebScrappingController extends Controller
         $link_texto = $crawler->filter('div[class="grade_54"] a[class="linkChamada_5"]')->extract(['_text', 'href']);
 
         // Unificar os dados de dia e mes
-        foreach($div_data_dia as $i => $dd) {
-            array_push($data_array, $dd.' '.$div_data_mes[$i]);
-        }
+        foreach($div_data_dia as $i => $dd) { array_push($data_array, $dd.' '.$div_data_mes[$i]); }
 
         foreach($data_array as $i => $da) {
             $dados_bb += [

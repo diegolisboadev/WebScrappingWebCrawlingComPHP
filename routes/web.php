@@ -14,9 +14,7 @@ use App\Http\Controllers\WebScrappingController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', function () { return view('webUni'); })->name('all');
 
 Route::get('/all', [WebScrappingController::class, 'webUni'])->name('all');
 
