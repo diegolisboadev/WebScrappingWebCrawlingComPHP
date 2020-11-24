@@ -28,7 +28,7 @@ html, body { font-family: "Open Sans",sans-serif; background-color: #00024A; }
     overflow: hidden;
     background-image: url('../images/FES.png');
     background-repeat: no-repeat;
-    background-size: 160px 160px;
+    background-size: 100px 100px;
     background-position: right;
 }
 
